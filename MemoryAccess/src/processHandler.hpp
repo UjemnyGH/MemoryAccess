@@ -32,14 +32,25 @@ public:
 			mProcessHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, mProcessId);
 		else
 			std::cout << "[WARN]: mProcessId = 0 in " << __FUNCSIG__ << " - No process id!\n";
+
+		if(!mProcessHandle) {
+			std::cout << "[ERROR]: mProcessHandle = nullptr in " << __FUNCSIG__ << " - No process handle!\n";
+		}
+
+		if (mProcessHandle == INVALID_HANDLE_VALUE) {
+			std::cout << "[ERROR]: mProcessHandle = INVALID_HANDLE_VALUE in " << __FUNCSIG__ << " - Invalid process handle!\n";
+		}
 	}
 
 	/** 
 	* Close process
 	*/
 	void CloseProc() {
-		if (mProcessHandle) 
+		if (mProcessHandle) {
 			CloseHandle(mProcessHandle);
+			mProcessHandle = nullptr;
+			mProcessId = 0;
+		}
 		else 
 			std::cout << "[WARN]: mProcessHandle = nullptr in " << __FUNCSIG__ << " - No process handle.\n";
 	}

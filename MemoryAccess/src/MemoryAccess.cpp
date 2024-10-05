@@ -16,7 +16,7 @@ int main(int, char**){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 
     // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "MemoryAccess", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(400, 600, "MemoryAccess", nullptr, nullptr);
     if (window == nullptr)
         return 1;
     glfwMakeContextCurrent(window);
@@ -30,14 +30,14 @@ int main(int, char**){
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
     // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsClassic();
     //ImGui::StyleColorsLight();
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    AccessWindowData awd;
+    EditProcessWindow epw;
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -54,9 +54,9 @@ int main(int, char**){
 
         ResetGlobalCounter();
 
-        ShowMemAccessWindow(&awd);
+        epw.Show();
 
-        ImGui::ShowDemoWindow();
+        //ImGui::ShowDemoWindow();
 
         // Rendering
         ImGui::Render();

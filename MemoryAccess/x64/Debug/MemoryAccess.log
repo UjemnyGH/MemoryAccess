@@ -8,14 +8,14 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.3412
   (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(4689,18):
       kontekst tworzenia wystąpienia szablonu (najpierw najstarszy) to
-          C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\processHandler.hpp(88,35):
+          C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\processHandler.hpp(99,35):
           zobacz odwołanie do kompilowanego tworzenia wystąpienia „std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<WCHAR*,0>(_Iter,_Iter,const _Alloc &)” funkcji szablon
           with
           [
               _Iter=WCHAR *,
               _Alloc=std::allocator<char>
           ]
-              C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\processHandler.hpp(88,23):
+              C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\processHandler.hpp(99,23):
               zobacz pierwsze odwołanie do elementu „std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string” w „Process::GetModuleNames”
           C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xstring(793,17):
           zobacz odwołanie do kompilowanego tworzenia wystąpienia „void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct_from_iter<WCHAR*,WCHAR*,_Size_type>(_Iter,const _Sent,_Size)” funkcji szablon
