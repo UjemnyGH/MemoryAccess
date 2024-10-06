@@ -16,7 +16,7 @@ int main(int, char**){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 
     // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(400, 600, "MemoryAccess", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(500, 600, "MemoryAccess", nullptr, nullptr);
     if (window == nullptr)
         return 1;
     glfwMakeContextCurrent(window);

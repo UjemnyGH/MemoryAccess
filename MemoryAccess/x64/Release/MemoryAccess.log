@@ -4,6 +4,121 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(1
       C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\vendor\include\GLFW\glfw3.h(123,11):
       zobacz poprzednią definicję „APIENTRY”
   
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(286,126): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(286,126): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(286,126): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(286,126): warning C4244:             T=uint32_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(286,126): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(295,126): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(295,126): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(295,126): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(295,126): warning C4244:             T=uint16_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(295,126): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(304,125): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(304,125): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(304,125): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(304,125): warning C4244:             T=uint8_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(304,125): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(322,125): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(322,125): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(322,125): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(322,125): warning C4244:             T=int32_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(322,125): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(331,125): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(331,125): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(331,125): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(331,125): warning C4244:             T=int16_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(331,125): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(340,124): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(340,124): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(340,124): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(340,124): warning C4244:             T=int8_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(340,124): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(349,124): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(349,124): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(349,124): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(349,124): warning C4244:             T=double
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(349,124): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(358,123): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(358,123): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(358,123): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(358,123): warning C4244:             T=float
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(358,123): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(445,173): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(445,173): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(445,173): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(445,173): warning C4244:             T=uint32_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(445,173): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(454,173): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(454,173): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(454,173): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(454,173): warning C4244:             T=uint16_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(454,173): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(463,172): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(463,172): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(463,172): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(463,172): warning C4244:             T=uint8_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(463,172): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(481,172): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(481,172): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(481,172): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(481,172): warning C4244:             T=int32_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(481,172): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(490,172): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(490,172): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(490,172): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(490,172): warning C4244:             T=int16_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(490,172): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(499,171): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(499,171): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(499,171): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(499,171): warning C4244:             T=int8_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(499,171): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(508,171): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(508,171): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(508,171): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(508,171): warning C4244:             T=double
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(508,171): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(517,170): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(517,170): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(517,170): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(517,170): warning C4244:             T=float
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(517,170): warning C4244:         ]
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.hpp(1066,22): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+  (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
+  
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(4689,18): warning C4244: "=": konwersja z "WCHAR" do "char", możliwa utrata danych
   (kompilowanie pliku źródłowego „src/MemoryAccess.cpp”)
       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(4689,18):
@@ -37,8 +152,8 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.3412
           ]
   
   Trwa generowanie kodu
-  1 of 2077 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    42 functions had inline decision re-evaluated but remain unchanged
+  343 of 2267 functions (15.1%) were compiled, the rest were copied from previous compilation.
+    151 functions were new in current compilation
+    213 functions had inline decision re-evaluated but remain unchanged
   Zakończono generowanie kodu
   MemoryAccess.vcxproj -> C:\Users\0x55\source\repos\MemoryAccess\x64\Release\MemoryAccess.exe
