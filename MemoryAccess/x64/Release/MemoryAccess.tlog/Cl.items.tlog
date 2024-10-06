@@ -6,4 +6,7 @@ C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\imgui\imgui_impl_opengl3.cp
 C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\imgui\imgui_stdlib.cpp;C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\x64\Release\imgui_stdlib.obj
 C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\imgui\imgui_tables.cpp;C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\x64\Release\imgui_tables.obj
 C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\imgui\imgui_widgets.cpp;C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\x64\Release\imgui_widgets.obj
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\MemoryAccess.cpp;C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\x64\Release\MemoryAccess.obj
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp;C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\x64\Release\accessWindow.obj
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\main.cpp;C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\x64\Release\main.obj
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\memoryAccessCore.cpp;C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\x64\Release\memoryAccessCore.obj
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\memoryConfigFileFormat.cpp;C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\x64\Release\memoryConfigFileFormat.obj

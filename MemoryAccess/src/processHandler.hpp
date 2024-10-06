@@ -1,3 +1,12 @@
+/**
+* 
+* @author Piotr UjemnyGH Plombon
+* 
+* This stay as header only for convinience 
+* and ease of implementing in other projects
+* 
+*/
+
 #pragma once
 #ifndef __PROCESS_HANDLER_
 #define __PROCESS_HANDLER_
@@ -28,6 +37,7 @@ public:
 	* Open process from process id
 	*/
 	void OpenProc() {
+		// If there is no process id, show error in console
 		if (mProcessId != 0) 
 			mProcessHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, mProcessId);
 		else
@@ -46,6 +56,7 @@ public:
 	* Close process
 	*/
 	void CloseProc() {
+		// Process handle must exist to close process (self explainatory)
 		if (mProcessHandle) {
 			CloseHandle(mProcessHandle);
 			mProcessHandle = nullptr;
@@ -60,6 +71,7 @@ public:
 	*/
 	template<typename T>
 	void WriteMemory(const std::uintptr_t& addr, const T& val) {
+		// Process must exist to write to memory
 		if (mProcessId != 0 && mProcessHandle)
 			WriteProcessMemory(mProcessHandle, reinterpret_cast<void*>(addr), &val, sizeof(T), NULL);
 		else 
@@ -73,6 +85,7 @@ public:
 	T ReadMemory(const std::uintptr_t& addr) {
 		T result = {};
 
+		// Process must exist to read value from memory
 		if (mProcessId != 0 && mProcessHandle)
 			ReadProcessMemory(mProcessHandle, reinterpret_cast<void*>(addr), &result, sizeof(T), NULL);
 		else
@@ -84,17 +97,21 @@ public:
 	static std::vector<std::string> GetModuleNames(const DWORD pid) {
 		std::vector<std::string> result;
 
+		// Create snapshot that gets all process <pid> module names
 		HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, pid);
 
+		// No snapshot = no modules, so return error and get out this function
 		if (snapshot == INVALID_HANDLE_VALUE) {
 			std::cout << "[ERROR]: INVALID_HANDLE_VALUE in " << __FUNCSIG__ << " - No snapshot!\n";
 
 			return result;
 		}
 
+		// Module entry, with module data
 		MODULEENTRY32 entry = { };
 		entry.dwSize = sizeof(MODULEENTRY32);
 
+		// Iterate through modules to get names
 		if (Module32FirstW(snapshot, &entry) == TRUE) {
 			result.emplace_back(std::string(&entry.szModule[0], &entry.szModule[256]));
 
@@ -103,25 +120,31 @@ public:
 			}
 		}
 
+		// Close snapshot
 		if (snapshot) CloseHandle(snapshot);
 
+		// And return result
 		return result;
 	}
 
 	static std::vector<std::string> GetProcessNames() {
 		std::vector<std::string> result;
 
+		// Create snapshot of all processes running on machine
 		HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 
+		// No snapshot = no modules, so return error and get out this function
 		if (snapshot == INVALID_HANDLE_VALUE) {
 			std::cout << "[ERROR]: INVALID_HANDLE_VALUE in " << __FUNCSIG__ << " - No snapshot!\n";
 
 			return result;
 		}
 
+		// Process entry with process data
 		PROCESSENTRY32 entry = {};
 		entry.dwSize = sizeof(decltype(entry));
 
+		// Iterate through processes to gte names
 		if (Process32FirstW(snapshot, &entry) == TRUE) {
 			result.emplace_back(std::string(&entry.szExeFile[0], &entry.szExeFile[260]));
 
@@ -130,8 +153,10 @@ public:
 			}
 		}
 
+		// Close snapshot
 		if(snapshot) CloseHandle(snapshot);
 
+		// And return what we found
 		return result;
 	}
 
@@ -213,6 +238,11 @@ public:
 		// Close snapshot handle
 		if (snapshot) CloseHandle(snapshot);
 	}
+
+	// Cause a lot of warnings in TTY
+	/*~Process() {
+		CloseProc();
+	}*/
 };
 
 #endif
