@@ -13,6 +13,7 @@ Program for accessing and editing processes memory. Simple to use, yet effective
 7. Loop on key press
 8. Save/load config files with memory offsets
 9. Limit loop index
+10. Reading memory block
 
 ## Used libraries:
 > 1. GLFW - For window creation

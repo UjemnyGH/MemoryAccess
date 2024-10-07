@@ -213,7 +213,7 @@ int main(int, char**){
             windowSizeX = tempWinSizeX;
             windowSizeY = tempWinSizeY;
 
-            glfwSetCursor(window, NULL);
+            //glfwSetCursor(window, NULL);
         }
 
         // If there is no resizing, draging window is enabled
@@ -244,7 +244,7 @@ int main(int, char**){
         // X axis resize case (clamping value for convinience)
         if (resizeOnX && GetAsyncKeyState(VK_LBUTTON)) {
             windowSizeX = tempWinSizeX - (windowSizeOffX - mouse.x);
-            windowSizeX = std::clamp(windowSizeX, 200, 32768);
+            windowSizeX = std::clamp(windowSizeX, 300, 32768);
 
             glfwSetWindowSize(window, windowSizeX, windowSizeY);
         }
@@ -257,12 +257,12 @@ int main(int, char**){
         }
 
         // If temporary values aren`t equal with window size, equal them (just for error checking, without this if window can resize Y axis up on resizing X axis by user)
-        if (tempWinSizeX != windowSizeX || tempWinSizeY != windowSizeY) {
+        /*if (tempWinSizeX != windowSizeX || tempWinSizeY != windowSizeY) {
             windowSizeX = tempWinSizeX;
             windowSizeY = tempWinSizeY;
 
             glfwSetWindowSize(window, windowSizeX, windowSizeY);
-        }
+        }*/
 
         //ImGui::ShowDemoWindow();
 

@@ -99,7 +99,7 @@ void MemoryConfigFile::SaveConfigToFile(std::string path) {
 	file.close();
 }
 
-bool MemoryConfigFile::LoadConfigFromFIle(std::string path) {
+bool MemoryConfigFile::LoadConfigFromFile(std::string path) {
 	std::ifstream file;
 	// Open file in binary starting from end
 	file.open(path + std::string(".macfg"), std::ios::binary | std::ios::ate);

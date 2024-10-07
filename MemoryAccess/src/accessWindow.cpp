@@ -27,7 +27,7 @@ void EditProcessWindow::OpenCalculatorPopup() {
 	}
 
 	if (ImGui::BeginPopupModal("Calculator", &mOpenCalculatorPopup, ImGuiWindowFlags_AlwaysAutoResize)) {
-		ImGui::InputScalar("Hex", ImGuiDataType_U64, &mCalculatorData, (void*)0, (void*)0, "%x", ImGuiInputTextFlags_CharsHexadecimal);
+		ImGui::InputScalar("Hex", ImGuiDataType_U64, &mCalculatorData, (void*)0, (void*)0, "%lx", ImGuiInputTextFlags_CharsHexadecimal);
 		ImGui::InputDouble("Flt", (double*)&mCalculatorData);
 		ImGui::InputText("Text", (char*)&mCalculatorData, sizeof(uint64_t));
 
@@ -59,6 +59,91 @@ void EditProcessWindow::OpenSoftwareInfoPopup() {
 		}
 
 		ImGui::EndPopup();
+	}
+}
+
+void EditProcessWindow::OpenGetValuesBetweenAddressesPopup(AccessProcessData* apd) {
+	if (mOpenGetValuesBetweenAddressesPopup) {
+		ImGui::OpenPopup("Get values between addresses");
+	}
+
+	if (ImGui::BeginPopupModal("Get values between addresses", &mOpenGetValuesBetweenAddressesPopup)) {
+		ImGui::Text("Get values between 2 addresses on\nprocess in current tab");
+
+		bool editing_start = ImGui::InputScalar("Start address", ImGuiDataType_U64, &mFetchedAddressLow, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
+		bool editing_end = ImGui::InputScalar("End address", ImGuiDataType_U64, &mFetchedAddressHigh, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
+		ImGui::Checkbox("Add module address", &mBeginFromModuleAddress);
+		
+		if (editing_start || editing_end) mRunFetchingReadStatus = false;
+
+		ImGui::Checkbox("Run", &mRunFetchingReadStatus);
+
+		std::uintptr_t startAddress = (mBeginFromModuleAddress ? apd->mModuleAddress : 0) + mFetchedAddressLow;
+		std::uintptr_t endAddress = (mBeginFromModuleAddress ? apd->mModuleAddress : 0) + mFetchedAddressHigh;
+
+		ImGui::Text("@%p - @%p", startAddress, endAddress);
+
+		if (startAddress > endAddress) {
+			mFetchedAddressHigh = mFetchedAddressLow;
+		}
+
+		if (ImGui::Button("Close")) {
+			mOpenGetValuesBetweenAddressesPopup = false;
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::Text("Data shown in 8 bytes");
+
+		if (mRunFetchingReadStatus && apd->mProcessPtr() != 0) {
+			for (int i = 0; i < (endAddress - startAddress) / 8; i++) {
+				std::uint64_t value = apd->mProcessPtr.ReadMemory<std::uint64_t>(startAddress + (i * 8));
+
+				ImGui::Text((mDecimalValues ? "%lld  @  %p" : "%llx  @  %p"), value, startAddress + (i * 8));
+			}
+		}
+
+		ImGui::EndPopup();
+	}
+}
+
+void EditProcessWindow::OpenSaveConfigDialogBox(GLFWwindow* wnd) {
+	mConfigFilename.clear();
+	mConfigFilename.resize(0x1000);
+	mDialogBoxData.lStructSize = sizeof(mDialogBoxData);
+	mDialogBoxData.lpstrFile = mConfigFilename.data();
+	mDialogBoxData.nMaxFile = 0x1000;
+	mDialogBoxData.lpstrFilter = ".macfg\0";
+	mDialogBoxData.nFilterIndex = 1;
+	mDialogBoxData.Flags = OFN_OVERWRITEPROMPT;
+	mDialogBoxData.hwndOwner = glfwGetWin32Window(wnd);
+
+	GetSaveFileNameA(&mDialogBoxData);
+
+	mConfigFilename.shrink_to_fit();
+
+	while (mConfigFilename.find('\0') != std::string::npos) {
+		mConfigFilename.erase(mConfigFilename.begin() + mConfigFilename.find('\0'));
+	}
+}
+
+void EditProcessWindow::OpenLoadConfigDialogBox(GLFWwindow* wnd) {
+	mConfigFilename.clear();
+	mConfigFilename.resize(0x1000);
+	mDialogBoxData.lStructSize = sizeof(mDialogBoxData);
+	mDialogBoxData.lpstrFile = mConfigFilename.data();
+	mDialogBoxData.nMaxFile = 0x1000;
+	mDialogBoxData.lpstrFilter = ".macfg\0";
+	mDialogBoxData.nFilterIndex = 1;
+	mDialogBoxData.hwndOwner = glfwGetWin32Window(wnd);
+
+	GetOpenFileNameA(&mDialogBoxData);
+
+	if (mConfigFilename.find(".macfg") != std::string::npos) {
+		mConfigFilename.erase(mConfigFilename.begin() + mConfigFilename.find(".macfg"), mConfigFilename.end());
+	}
+
+	while (mConfigFilename.find('\0') != std::string::npos) {
+		mConfigFilename.erase(mConfigFilename.begin() + mConfigFilename.find('\0'));
 	}
 }
 
@@ -140,7 +225,7 @@ void EditProcessWindow::OpenLoadConfigPopup() {
 			aapd->mData.clear();
 
 			// If file loaded correctly write all data to memory
-			if (file.LoadConfigFromFIle(mConfigFilename)) {
+			if (file.LoadConfigFromFile(mConfigFilename)) {
 				// Order matters, so firstly load simple data struct
 				apd->mSelectedProcess = file[0].mStr;
 				apd->mSelectedModule = file[1].mStr;
@@ -198,24 +283,45 @@ void EditProcessWindow::OpenProcess(AccessProcessData* apd) {
 
 	// Input process name 
 	bool open_proc = ImGui::InputText("Process name", &apd->mSelectedProcess, ImGuiInputTextFlags_EnterReturnsTrue);
+	// Search process name
+	ImGui::InputText("Search process", &apd->mSearchProcess);
+
+	// All found process names separated by new line
+	std::string found_valid_process_names_from_search;
+
+	// Run through all process names
+	for (std::string & name : process_names) {
+		// Check if process name contain desired string
+		if (name.find(apd->mSearchProcess) != std::string::npos) {
+			// If yes add name to all found valid process
+			found_valid_process_names_from_search += std::string(name.begin(), name.begin() + name.find_first_of('\0')) + '\n';
+		}
+	}
+
+	// Then display it if found valid processes and search box arent empty, user still needs to type process name
+	if (!found_valid_process_names_from_search.empty() && !apd->mSearchProcess.empty()) {
+		ImGui::InputTextMultiline("Found processes", &found_valid_process_names_from_search, ImVec2(0, 0), ImGuiInputTextFlags_ReadOnly);
+	}
 
 	// Show all processes on user desire
 	if (mListProcesses) {
 		if (ImGui::BeginCombo("Processes list", apd->mSelectedProcess.c_str())) {
 			for (int i = 0; i < process_names.size(); i++) {
 				// We need custom ids for nameing collisions
-				ImGui::PushID(&process_names[i]);
+				if (apd->mSearchProcess.empty() || process_names[i].find(apd->mSearchProcess) != std::string::npos) {
+					ImGui::PushID(&process_names[i]);
 
-				// Select process (dont work)
-				if (ImGui::Selectable(process_names[i].c_str())) {
-					apd->mSelectedProcess = process_names[i];
+					// Select process (dont work)
+					if (ImGui::Selectable(process_names[i].c_str())) {
+						apd->mSelectedProcess = process_names[i];
+
+						ImGui::PopID();
+
+						break;
+					}
 
 					ImGui::PopID();
-
-					break;
 				}
-
-				ImGui::PopID();
 			}
 
 			ImGui::EndCombo();
@@ -268,6 +374,26 @@ void EditProcessWindow::ShowModules(AccessProcessData* apd) {
 			// Input module name
 			bool open_module = ImGui::InputText("Module name", &apd->mSelectedModule, ImGuiInputTextFlags_EnterReturnsTrue);
 
+			// Search module name
+			ImGui::InputText("Search modules", &apd->mSearchModule);
+
+			// All found module names separated by new line
+			std::string found_valid_module_names_from_search;
+
+			// Run through all process names
+			for (std::string& name : module_names) {
+				// Check if process name contain desired string
+				if (name.find(apd->mSearchModule) != std::string::npos) {
+					// If yes add name to all found valid process
+					found_valid_module_names_from_search += std::string(name.begin(), name.begin() + name.find_first_of('\0')) + '\n';
+				}
+			}
+
+			// Then display it if found valid processes and search box arent empty, user still needs to type process name
+			if (!found_valid_module_names_from_search.empty() && !apd->mSearchModule.empty()) {
+				ImGui::InputTextMultiline("Found module", &found_valid_module_names_from_search, ImVec2(0, 0), ImGuiInputTextFlags_ReadOnly);
+			}
+
 			// List all modules on user demand
 			if (mListModules) {
 				if (ImGui::BeginCombo("Modules list", apd->mSelectedModule.c_str())) {
@@ -318,7 +444,7 @@ void EditProcessWindow::ShowWriteMemory(AccessProcessData* apd) {
 		ImGui::Checkbox("Write staring from module address", &mWriteStartingFromModule);
 
 		// Address of value to write to process memory
-		ImGui::InputScalar("Address##01", ImGuiDataType_U64, (uint64_t*)&apd->mAddress, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+		ImGui::InputScalar("Address##01", ImGuiDataType_U64, (uint64_t*)&apd->mAddress, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 		// Unsigned : 0, 1, 2, 3; Signed : 4, 5, 6, 7; Floating point: 8, 9 
 		const char* basic_value_types[] = { "Unsigned 64", "Unsigned 32", "Unsigned 16", "Unsigned 8", "Signed 64", "Signed 32", "Signed 16", "Signed 8", "Float 64", "Float 32" };
@@ -329,7 +455,7 @@ void EditProcessWindow::ShowWriteMemory(AccessProcessData* apd) {
 		switch (mCurrentWriteValueType) {
 		case 0: // U64
 			// Written value
-			ImGui::InputScalar("Value", ImGuiDataType_U64, (uint64_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_U64, (uint64_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			// Write to process memory address on user demand
 			if (ImGui::Button("Write")) {
@@ -339,7 +465,7 @@ void EditProcessWindow::ShowWriteMemory(AccessProcessData* apd) {
 			break;
 
 		case 1: // U32
-			ImGui::InputScalar("Value", ImGuiDataType_U32, (uint32_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_U32, (uint32_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<uint32_t>((mWriteStartingFromModule == true ? apd->mModuleAddress : 0) + apd->mAddress, apd->mValue);
@@ -348,7 +474,7 @@ void EditProcessWindow::ShowWriteMemory(AccessProcessData* apd) {
 			break;
 
 		case 2: // U16
-			ImGui::InputScalar("Value", ImGuiDataType_U16, (uint16_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_U16, (uint16_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<uint16_t>((mWriteStartingFromModule == true ? apd->mModuleAddress : 0) + apd->mAddress, apd->mValue);
@@ -357,7 +483,7 @@ void EditProcessWindow::ShowWriteMemory(AccessProcessData* apd) {
 			break;
 
 		case 3: // U8
-			ImGui::InputScalar("Value", ImGuiDataType_U8, (uint8_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_U8, (uint8_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%lx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<uint8_t>((mWriteStartingFromModule == true ? apd->mModuleAddress : 0) + apd->mAddress, apd->mValue);
@@ -366,7 +492,7 @@ void EditProcessWindow::ShowWriteMemory(AccessProcessData* apd) {
 			break;
 
 		case 4: // S64
-			ImGui::InputScalar("Value", ImGuiDataType_S64, (int64_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_S64, (int64_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<int64_t>((mWriteStartingFromModule == true ? apd->mModuleAddress : 0) + apd->mAddress, apd->mValue);
@@ -375,7 +501,7 @@ void EditProcessWindow::ShowWriteMemory(AccessProcessData* apd) {
 			break;
 
 		case 5: // S32
-			ImGui::InputScalar("Value", ImGuiDataType_S32, (int32_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_S32, (int32_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<int32_t>((mWriteStartingFromModule == true ? apd->mModuleAddress : 0) + apd->mAddress, apd->mValue);
@@ -384,7 +510,7 @@ void EditProcessWindow::ShowWriteMemory(AccessProcessData* apd) {
 			break;
 
 		case 6: // S16
-			ImGui::InputScalar("Value", ImGuiDataType_S16, (int16_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_S16, (int16_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<int16_t>((mWriteStartingFromModule == true ? apd->mModuleAddress : 0) + apd->mAddress, apd->mValue);
@@ -393,7 +519,7 @@ void EditProcessWindow::ShowWriteMemory(AccessProcessData* apd) {
 			break;
 
 		case 7: // S8
-			ImGui::InputScalar("Value", ImGuiDataType_S8, (int8_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_S8, (int8_t*)&apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<int8_t>((mWriteStartingFromModule == true ? apd->mModuleAddress : 0) + apd->mAddress, apd->mValue);
@@ -402,7 +528,7 @@ void EditProcessWindow::ShowWriteMemory(AccessProcessData* apd) {
 			break;
 
 		case 8: // F64
-			ImGui::InputScalar("Value", ImGuiDataType_Double, (double*)&apd->mValue, (void*)0, (void*)0/*, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal*/);
+			ImGui::InputScalar("Value", ImGuiDataType_Double, (double*)&apd->mValue, (void*)0, (void*)0/*, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal*/);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<uint64_t>((mWriteStartingFromModule == true ? apd->mModuleAddress : 0) + apd->mAddress, apd->mValue);
@@ -411,7 +537,7 @@ void EditProcessWindow::ShowWriteMemory(AccessProcessData* apd) {
 			break;
 
 		case 9: // F32
-			ImGui::InputScalar("Value", ImGuiDataType_Float, (float*)&apd->mValue, (void*)0, (void*)0/*, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal */);
+			ImGui::InputScalar("Value", ImGuiDataType_Float, (float*)&apd->mValue, (void*)0, (void*)0/*, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal */);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<uint32_t>((mWriteStartingFromModule == true ? apd->mModuleAddress : 0) + apd->mAddress, apd->mValue);
@@ -420,7 +546,7 @@ void EditProcessWindow::ShowWriteMemory(AccessProcessData* apd) {
 			break;
 
 		default: // U64
-			ImGui::InputScalar("Value", ImGuiDataType_U64, &apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_U64, &apd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<uint64_t>((mWriteStartingFromModule == true ? apd->mModuleAddress : 0) + apd->mAddress, apd->mValue);
@@ -450,7 +576,7 @@ void EditProcessWindow::ShowReadMemory(AccessProcessData* apd) {
 		ImGui::Checkbox("Read starting from module address", &mReadStartingFromModule);
 
 		// Set address in memory ro read from
-		ImGui::InputScalar("Address##02", ImGuiDataType_U64, (uint64_t*)&apd->mAddress, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+		ImGui::InputScalar("Address##02", ImGuiDataType_U64, (uint64_t*)&apd->mAddress, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 		// Read memory from process on user demand
 		if (ImGui::Button("Read")) {
@@ -477,7 +603,7 @@ void EditProcessWindow::AdvancedShowWriteMemory(AccessProcessData* apd, Advanced
 	if (!apd->mSelectedProcess.empty() && apd->mProcessPtr() != 0) {
 		ImGui::SeparatorText("Write memory");
 
-		ImGui::InputScalar("Address##01", ImGuiDataType_U64, (uint64_t*)&aapd->mAddress, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+		ImGui::InputScalar("Address##01", ImGuiDataType_U64, (uint64_t*)&aapd->mAddress, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 		// Unsigned : 0, 1, 2, 3; Signed : 4, 5, 6, 7; Floating point: 8, 9 
 		const char* basic_value_types[] = { "Unsigned 64", "Unsigned 32", "Unsigned 16", "Unsigned 8", "Signed 64", "Signed 32", "Signed 16", "Signed 8", "Float 64", "Float 32" };
@@ -488,7 +614,7 @@ void EditProcessWindow::AdvancedShowWriteMemory(AccessProcessData* apd, Advanced
 		switch (aapd->mValueType) {
 		case 0: // U64
 			// And set value (im not wtiring 10 same comments)
-			ImGui::InputScalar("Value", ImGuiDataType_U64, (uint64_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_U64, (uint64_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			// Write on user demand
 			if (ImGui::Button("Write")) {
@@ -498,7 +624,7 @@ void EditProcessWindow::AdvancedShowWriteMemory(AccessProcessData* apd, Advanced
 			break;
 
 		case 1: // U32
-			ImGui::InputScalar("Value", ImGuiDataType_U32, (uint32_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_U32, (uint32_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<uint32_t>(((aapd->mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mAddress, aapd->mValue);
@@ -507,7 +633,7 @@ void EditProcessWindow::AdvancedShowWriteMemory(AccessProcessData* apd, Advanced
 			break;
 
 		case 2: // U16
-			ImGui::InputScalar("Value", ImGuiDataType_U16, (uint16_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_U16, (uint16_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<uint16_t>(((aapd->mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mAddress, aapd->mValue);
@@ -516,7 +642,7 @@ void EditProcessWindow::AdvancedShowWriteMemory(AccessProcessData* apd, Advanced
 			break;
 
 		case 3: // U8
-			ImGui::InputScalar("Value", ImGuiDataType_U8, (uint8_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_U8, (uint8_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<uint8_t>(((aapd->mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mAddress, aapd->mValue);
@@ -525,7 +651,7 @@ void EditProcessWindow::AdvancedShowWriteMemory(AccessProcessData* apd, Advanced
 			break;
 
 		case 4: // S64
-			ImGui::InputScalar("Value", ImGuiDataType_S64, (int64_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_S64, (int64_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<int64_t>(((aapd->mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mAddress, aapd->mValue);
@@ -534,7 +660,7 @@ void EditProcessWindow::AdvancedShowWriteMemory(AccessProcessData* apd, Advanced
 			break;
 
 		case 5: // S32
-			ImGui::InputScalar("Value", ImGuiDataType_S32, (int32_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_S32, (int32_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<int32_t>(((aapd->mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mAddress, aapd->mValue);
@@ -543,7 +669,7 @@ void EditProcessWindow::AdvancedShowWriteMemory(AccessProcessData* apd, Advanced
 			break;
 
 		case 6: // S16
-			ImGui::InputScalar("Value", ImGuiDataType_S16, (int16_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_S16, (int16_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<int16_t>(((aapd->mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mAddress, aapd->mValue);
@@ -552,7 +678,7 @@ void EditProcessWindow::AdvancedShowWriteMemory(AccessProcessData* apd, Advanced
 			break;
 
 		case 7: // S8
-			ImGui::InputScalar("Value", ImGuiDataType_S8, (int8_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_S8, (int8_t*)&aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<int8_t>(((aapd->mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mAddress, aapd->mValue);
@@ -561,7 +687,7 @@ void EditProcessWindow::AdvancedShowWriteMemory(AccessProcessData* apd, Advanced
 			break;
 
 		case 8: // F64
-			ImGui::InputScalar("Value", ImGuiDataType_Double, (double*)&aapd->mValue, (void*)0, (void*)0/*, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal*/);
+			ImGui::InputScalar("Value", ImGuiDataType_Double, (double*)&aapd->mValue, (void*)0, (void*)0/*, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal*/);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<uint64_t>(((aapd->mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mAddress, aapd->mValue);
@@ -570,7 +696,7 @@ void EditProcessWindow::AdvancedShowWriteMemory(AccessProcessData* apd, Advanced
 			break;
 
 		case 9: // F32
-			ImGui::InputScalar("Value", ImGuiDataType_Float, (float*)&aapd->mValue, (void*)0, (void*)0/*, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal */);
+			ImGui::InputScalar("Value", ImGuiDataType_Float, (float*)&aapd->mValue, (void*)0, (void*)0/*, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal */);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<uint32_t>(((aapd->mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mAddress, aapd->mValue);
@@ -579,7 +705,7 @@ void EditProcessWindow::AdvancedShowWriteMemory(AccessProcessData* apd, Advanced
 			break;
 
 		default: // U64
-			ImGui::InputScalar("Value", ImGuiDataType_U64, &aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+			ImGui::InputScalar("Value", ImGuiDataType_U64, &aapd->mValue, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 			if (ImGui::Button("Write")) {
 				apd->mProcessPtr.WriteMemory<uint64_t>(((aapd->mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mAddress, aapd->mValue);
@@ -604,7 +730,7 @@ void EditProcessWindow::AdvancedShowReadMemory(AccessProcessData* apd, AdvancedA
 	if (!apd->mSelectedProcess.empty() && apd->mProcessPtr() != 0) {
 		ImGui::SeparatorText("Read memory");
 
-		ImGui::InputScalar("Address##02", ImGuiDataType_U64, (uint64_t*)&aapd->mAddress, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%x"), ImGuiInputTextFlags_CharsHexadecimal);
+		ImGui::InputScalar("Address##02", ImGuiDataType_U64, (uint64_t*)&aapd->mAddress, (void*)0, (void*)0, (mDecimalValues == true ? (char*)0 : "%llx"), ImGuiInputTextFlags_CharsHexadecimal);
 
 		// Read from address on user demand
 		if (ImGui::Button("Read")) {
@@ -642,29 +768,34 @@ void EditProcessWindow::AdvancedView(AccessProcessData* apd, int currentApd) {
 		// Access AdvancedAccessProcessData by our current AccessProcessData
 		AdvancedAccessProcessData* aapd = &mAdvAccessData[currentApd];
 
-		ImGui::TextUnformatted("This allows to create macros, loop reading and writing memory\nand other cool stuff");
+		ImGui::TextUnformatted("This allows to create macros, loop reading and writing memory\nand other cool stuff. For macros \"Advanced\" tab needs\nto be open");
 
 		// Add data to R/W
 		if (ImGui::Button("Add")) {
 			AddAdvancedData(aapd, std::string("Data ") + std::to_string(gGlobalCounter++));
 		}
 
+		// Search data name
+		ImGui::InputText("Search data", &apd->mSearchAdvancedData);
+
 		std::int64_t delete_index = -1;
 
 		for (std::size_t i = 0; i < aapd->mData.size(); i++) {
 			// We need custom ids for no collision
-			ImGui::PushID(&aapd->mData[i]);
+			if (aapd->mData[i].mDataName.find(apd->mSearchAdvancedData) == std::string::npos) {
+				continue;
+			}
 
-			ImGui::SetNextItemOpen(true, ImGuiCond_Appearing);
-			if (ImGui::TreeNode(aapd->mData[i].mDataName.c_str())) {
+			//ImGui::PushID(&aapd->mData[i]);
+
+			//ImGui::SetNextItemOpen(true, ImGuiCond_Appearing);
+			if (ImGui::TreeNode(&aapd->mData[i], aapd->mData[i].mDataName.c_str())) {
 				// Delete data
 				if (ImGui::Button("Delete")) {
 					delete_index = (std::int64_t)i;
 				}
 
-				if (ImGui::InputText("Data name", &aapd->mData[i].mDataName, ImGuiInputTextFlags_CallbackEdit)) {
-					ImGui::SetKeyboardFocusHere(0);
-				}
+				ImGui::InputText("Data name", &aapd->mData[i].mDataName);
 
 				// Flags should be self explainatory
 				ImGui::CheckboxFlags("Read on key press", &aapd->mData[i].mFlags, AAPDF_readOnKey);
@@ -688,69 +819,6 @@ void EditProcessWindow::AdvancedView(AccessProcessData* apd, int currentApd) {
 				// Reset loop index
 				if (ImGui::Button("Reset loop index")) aapd->mData[i].mLoopIndex = 0;
 
-				// We need to change key names to key values that GetAsyncKeyState understand
-				aapd->mData[i].mRWKey = KeynameToVkValue(aapd->mData[i].mRWKeyName.c_str());
-				aapd->mData[i].mLoopingKey = KeynameToVkValue(aapd->mData[i].mLoopingKeyName.c_str());
-
-				// If key specified by user is pressed...
-				if (aapd->mData[i].mRWKey != 0 && GetAsyncKeyState(aapd->mData[i].mRWKey)) {
-					// ... check if we want to read, process and address to read from exist...
-					if (apd->mProcessPtr() != 0 && aapd->mData[i].mAddress != 0 && aapd->mData[i].mFlags & AAPDF_readOnKey) {
-						// ... then read from specified address
-						//aapd->mData[i].mValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
-
-						if (aapd->mData[i].mFlags & AAPDF_dontUseValueAsReadBuffer) aapd->mData[i].mReadValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
-						else aapd->mData[i].mValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
-					}
-
-					// .. check if we want to write, process and address to write to exist..
-					if (apd->mProcessPtr() != 0 && aapd->mData[i].mAddress != 0 && aapd->mData[i].mFlags & AAPDF_writeOnKey) {
-						// ... then write specified value to specified earlier address
-						apd->mProcessPtr.WriteMemory(((aapd->mData[i].mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress, aapd->mData[i].mValue);
-					}
-				}
-
-				// If looping key is specified, process and address to read form exist and flag to start looping is set...
-				if (apd->mProcessPtr() != 0 && aapd->mData[i].mAddress != 0 && aapd->mData[i].mFlags & AAPDF_readLoop && aapd->mData[i].mFlags & AAPDF_statusLooping) {
-					// ... then check looping index limit, if there is none loop infinitly
-					if (aapd->mData[i].mLoopIndexLimit == 0) {
-						//aapd->mData[i].mValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
-						if (aapd->mData[i].mFlags & AAPDF_dontUseValueAsReadBuffer) aapd->mData[i].mReadValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
-						else aapd->mData[i].mValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
-					}
-					else {
-						// If there is some limit to loop then use it
-						if (aapd->mData[i].mLoopIndex < aapd->mData[i].mLoopIndexLimit) {
-							//aapd->mData[i].mValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
-							if (aapd->mData[i].mFlags & AAPDF_dontUseValueAsReadBuffer) aapd->mData[i].mReadValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
-							else aapd->mData[i].mValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
-
-							aapd->mData[i].mLoopIndex++;
-						}
-					}
-				}
-
-				// If looping key is specified, process and address to write to exist and flag to start looping is set...
-				if (apd->mProcessPtr() != 0 && aapd->mData[i].mAddress != 0 && aapd->mData[i].mFlags & AAPDF_writeLoop && aapd->mData[i].mFlags & AAPDF_statusLooping) {
-					// ... then check looping index limit, if there is none loop infinitly
-					if (aapd->mData[i].mLoopIndexLimit == 0) {
-						apd->mProcessPtr.WriteMemory(((aapd->mData[i].mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress, aapd->mData[i].mValue);
-					}
-					else {
-						// If there is some limit to loop then use it
-						if (aapd->mData[i].mLoopIndex < aapd->mData[i].mLoopIndexLimit) {
-							apd->mProcessPtr.WriteMemory(((aapd->mData[i].mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress, aapd->mData[i].mValue);
-
-							aapd->mData[i].mLoopIndex++;
-						}
-					}
-				}
-
-				// Change looping status on key press earlier specyfied by user 
-				if (GetAsyncKeyState(aapd->mData[i].mLoopingKey)) {
-					aapd->mData[i].mFlags ^= AAPDF_statusLooping;
-				}
-
 				// Show read and write
 				AdvancedShowWriteMemory(apd, &aapd->mData[i]);
 				AdvancedShowReadMemory(apd, &aapd->mData[i]);
@@ -758,7 +826,70 @@ void EditProcessWindow::AdvancedView(AccessProcessData* apd, int currentApd) {
 				ImGui::TreePop();
 			}
 
-			ImGui::PopID();
+			//ImGui::PopID();
+
+			// We need to change key names to key values that GetAsyncKeyState understand
+			aapd->mData[i].mRWKey = KeynameToVkValue(aapd->mData[i].mRWKeyName.c_str());
+			aapd->mData[i].mLoopingKey = KeynameToVkValue(aapd->mData[i].mLoopingKeyName.c_str());
+
+			// If key specified by user is pressed...
+			if (aapd->mData[i].mRWKey != 0 && GetAsyncKeyState(aapd->mData[i].mRWKey)) {
+				// ... check if we want to read, process and address to read from exist...
+				if (apd->mProcessPtr() != 0 && aapd->mData[i].mAddress != 0 && aapd->mData[i].mFlags & AAPDF_readOnKey) {
+					// ... then read from specified address
+					//aapd->mData[i].mValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
+
+					if (aapd->mData[i].mFlags & AAPDF_dontUseValueAsReadBuffer) aapd->mData[i].mReadValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
+					else aapd->mData[i].mValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
+				}
+
+				// .. check if we want to write, process and address to write to exist..
+				if (apd->mProcessPtr() != 0 && aapd->mData[i].mAddress != 0 && aapd->mData[i].mFlags & AAPDF_writeOnKey) {
+					// ... then write specified value to specified earlier address
+					apd->mProcessPtr.WriteMemory(((aapd->mData[i].mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress, aapd->mData[i].mValue);
+				}
+			}
+
+			// If looping key is specified, process and address to read form exist and flag to start looping is set...
+			if (apd->mProcessPtr() != 0 && aapd->mData[i].mAddress != 0 && aapd->mData[i].mFlags & AAPDF_readLoop && aapd->mData[i].mFlags & AAPDF_statusLooping) {
+				// ... then check looping index limit, if there is none loop infinitly
+				if (aapd->mData[i].mLoopIndexLimit == 0) {
+					//aapd->mData[i].mValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
+					if (aapd->mData[i].mFlags & AAPDF_dontUseValueAsReadBuffer) aapd->mData[i].mReadValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
+					else aapd->mData[i].mValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
+				}
+				else {
+					// If there is some limit to loop then use it
+					if (aapd->mData[i].mLoopIndex < aapd->mData[i].mLoopIndexLimit) {
+						//aapd->mData[i].mValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
+						if (aapd->mData[i].mFlags & AAPDF_dontUseValueAsReadBuffer) aapd->mData[i].mReadValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
+						else aapd->mData[i].mValue = apd->mProcessPtr.ReadMemory<std::uint64_t>(((aapd->mData[i].mFlags & AAPDF_readFromModuleAddress) == AAPDF_readFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress);
+
+						aapd->mData[i].mLoopIndex++;
+					}
+				}
+			}
+
+			// If looping key is specified, process and address to write to exist and flag to start looping is set...
+			if (apd->mProcessPtr() != 0 && aapd->mData[i].mAddress != 0 && aapd->mData[i].mFlags & AAPDF_writeLoop && aapd->mData[i].mFlags & AAPDF_statusLooping) {
+				// ... then check looping index limit, if there is none loop infinitly
+				if (aapd->mData[i].mLoopIndexLimit == 0) {
+					apd->mProcessPtr.WriteMemory(((aapd->mData[i].mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress, aapd->mData[i].mValue);
+				}
+				else {
+					// If there is some limit to loop then use it
+					if (aapd->mData[i].mLoopIndex < aapd->mData[i].mLoopIndexLimit) {
+						apd->mProcessPtr.WriteMemory(((aapd->mData[i].mFlags & AAPDF_writeFromModuleAddress) == AAPDF_writeFromModuleAddress ? apd->mModuleAddress : 0) + aapd->mData[i].mAddress, aapd->mData[i].mValue);
+
+						aapd->mData[i].mLoopIndex++;
+					}
+				}
+			}
+
+			// Change looping status on key press earlier specyfied by user 
+			if (GetAsyncKeyState(aapd->mData[i].mLoopingKey)) {
+				aapd->mData[i].mFlags ^= AAPDF_statusLooping;
+			}
 		}
 
 		// If we want to delete Aapd, we do it by index and set index back to -1 (accualy not needed)
@@ -826,11 +957,13 @@ void EditProcessWindow::ShowMenuBar(GLFWwindow* window) {
 
 		// Begin config menu (with saving and loading configs)
 		if (ImGui::BeginMenu("Config")) {
-			if (ImGui::MenuItem("Save cuurent tab to config")) {
+			if (ImGui::MenuItem("Save current tab to config")) {
+				OpenSaveConfigDialogBox(window);
 				mOpenSaveConfigPopup = true;
 			}
 
 			if (ImGui::MenuItem("Load config to current tab")) {
+				OpenLoadConfigDialogBox(window);
 				mOpenLoadConfigPopup = true;
 			}
 
@@ -842,6 +975,10 @@ void EditProcessWindow::ShowMenuBar(GLFWwindow* window) {
 			ImGui::MenuItem("Decimal values", "", &mDecimalValues);
 			// For advanced users
 			ImGui::MenuItem("Advanced", "", &mAdvancedView);
+
+			if (ImGui::MenuItem("Get values between addresses")) {
+				mOpenGetValuesBetweenAddressesPopup = true;
+			}
 
 			ImGui::EndMenu();
 		}
@@ -1022,6 +1159,10 @@ void EditProcessWindow::Show(GLFWwindow* window) {
 	OpenSaveConfigPopup();
 
 	OpenLoadConfigPopup();
+
+	if (!mAccessProcessDatas.empty()) {
+		OpenGetValuesBetweenAddressesPopup(&mAccessProcessDatas[mCurrentTab]);
+	}
 
 	ImGui::End();
 }

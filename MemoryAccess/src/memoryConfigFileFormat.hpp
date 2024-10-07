@@ -72,7 +72,7 @@ public:
 	void SaveConfigToFile(std::string path);
 
 	// Load config from desired location
-	bool LoadConfigFromFIle(std::string path);
+	bool LoadConfigFromFile(std::string path);
 };
 
 #endif

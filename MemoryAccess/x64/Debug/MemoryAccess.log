@@ -1,97 +1,89 @@
-﻿  imgui.cpp
-  imgui_demo.cpp
-  imgui_draw.cpp
-  imgui_impl_glfw.cpp
-  imgui_impl_opengl3.cpp
-  imgui_stdlib.cpp
-  imgui_tables.cpp
-  imgui_widgets.cpp
-  accessWindow.cpp
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(155,30): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(156,29): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(157,27): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(158,31): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(159,27): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(160,31): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(161,36): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(162,31): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(163,36): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(345,125): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(345,125): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(345,125): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(345,125): warning C4244:             T=uint32_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(345,125): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(354,125): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(354,125): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(354,125): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(354,125): warning C4244:             T=uint16_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(354,125): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(363,124): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(363,124): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(363,124): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(363,124): warning C4244:             T=uint8_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(363,124): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(381,124): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(381,124): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(381,124): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(381,124): warning C4244:             T=int32_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(381,124): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(390,124): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(390,124): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(390,124): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(390,124): warning C4244:             T=int16_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(390,124): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(399,123): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(399,123): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(399,123): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(399,123): warning C4244:             T=int8_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(399,123): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(417,125): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(417,125): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(417,125): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(417,125): warning C4244:             T=uint32_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(417,125): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(504,172): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(504,172): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(504,172): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(504,172): warning C4244:             T=uint32_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(504,172): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(513,172): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(513,172): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(513,172): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(513,172): warning C4244:             T=uint16_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(513,172): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(522,171): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(522,171): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(522,171): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(522,171): warning C4244:             T=uint8_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(522,171): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(540,171): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(540,171): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(540,171): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(540,171): warning C4244:             T=int32_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(540,171): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(549,171): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(549,171): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(549,171): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(549,171): warning C4244:             T=int16_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(549,171): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(558,170): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(558,170): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(558,170): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(558,170): warning C4244:             T=int8_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(558,170): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(576,172): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(576,172): warning C4244:         with
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(576,172): warning C4244:         [
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(576,172): warning C4244:             T=uint32_t
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(576,172): warning C4244:         ]
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(790,60): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(796,57): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(802,28): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(812,23): warning C4267: "argument": konwersja z "size_t" do "uint32_t", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(884,21): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(892,22): warning C4267: "argument": konwersja z "size_t" do "uint32_t", możliwa utrata danych
+﻿  accessWindow.cpp
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(240,30): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(241,29): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(242,27): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(243,31): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(244,27): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(245,31): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(246,36): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(247,31): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(248,36): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(471,125): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(471,125): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(471,125): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(471,125): warning C4244:             T=uint32_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(471,125): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(480,125): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(480,125): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(480,125): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(480,125): warning C4244:             T=uint16_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(480,125): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(489,124): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(489,124): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(489,124): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(489,124): warning C4244:             T=uint8_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(489,124): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(507,124): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(507,124): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(507,124): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(507,124): warning C4244:             T=int32_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(507,124): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(516,124): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(516,124): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(516,124): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(516,124): warning C4244:             T=int16_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(516,124): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(525,123): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(525,123): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(525,123): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(525,123): warning C4244:             T=int8_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(525,123): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(543,125): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(543,125): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(543,125): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(543,125): warning C4244:             T=uint32_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(543,125): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(630,172): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(630,172): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(630,172): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(630,172): warning C4244:             T=uint32_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(630,172): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(639,172): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(639,172): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(639,172): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(639,172): warning C4244:             T=uint16_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(639,172): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(648,171): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(648,171): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(648,171): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(648,171): warning C4244:             T=uint8_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(648,171): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(666,171): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(666,171): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(666,171): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(666,171): warning C4244:             T=int32_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(666,171): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(675,171): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(675,171): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(675,171): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(675,171): warning C4244:             T=int16_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(675,171): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(684,170): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(684,170): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(684,170): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(684,170): warning C4244:             T=int8_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(684,170): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(702,172): warning C4244: "argument": konwersja z "uint64_t" do "const T", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(702,172): warning C4244:         with
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(702,172): warning C4244:         [
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(702,172): warning C4244:             T=uint32_t
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(702,172): warning C4244:         ]
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(921,60): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(927,57): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(933,28): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(943,23): warning C4267: "argument": konwersja z "size_t" do "uint32_t", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(1021,21): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\accessWindow.cpp(1029,22): warning C4267: "argument": konwersja z "size_t" do "uint32_t", możliwa utrata danych
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(4689,18): warning C4244: "=": konwersja z "WCHAR" do "char", możliwa utrata danych
   (kompilowanie pliku źródłowego „src/accessWindow.cpp”)
       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(4689,18):
@@ -124,41 +116,5 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.3412
               _SizeTy=unsigned __int64
           ]
   
-  main.cpp
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(4689,18): warning C4244: "=": konwersja z "WCHAR" do "char", możliwa utrata danych
-  (kompilowanie pliku źródłowego „src/main.cpp”)
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(4689,18):
-      kontekst tworzenia wystąpienia szablonu (najpierw najstarszy) to
-          C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\processHandler.hpp(116,35):
-          zobacz odwołanie do kompilowanego tworzenia wystąpienia „std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<WCHAR*,0>(_Iter,_Iter,const _Alloc &)” funkcji szablon
-          with
-          [
-              _Iter=WCHAR *,
-              _Alloc=std::allocator<char>
-          ]
-              C:\Users\0x55\source\repos\MemoryAccess\MemoryAccess\src\processHandler.hpp(116,23):
-              zobacz pierwsze odwołanie do elementu „std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string” w „Process::GetModuleNames”
-          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xstring(793,17):
-          zobacz odwołanie do kompilowanego tworzenia wystąpienia „void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct_from_iter<WCHAR*,WCHAR*,_Size_type>(_Iter,const _Sent,_Size)” funkcji szablon
-          with
-          [
-              _Size_type=unsigned __int64,
-              _Iter=WCHAR *,
-              _Sent=WCHAR *,
-              _Size=unsigned __int64
-          ]
-          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xstring(949,18):
-          zobacz odwołanie do kompilowanego tworzenia wystąpienia „_OutIt *std::_Copy_n_unchecked4<WCHAR*,_Size,char*>(_InIt,_SizeTy,_OutIt)” funkcji szablon
-          with
-          [
-              _OutIt=char *,
-              _Size=unsigned __int64,
-              _InIt=WCHAR *,
-              _SizeTy=unsigned __int64
-          ]
-  
-  memoryAccessCore.cpp
-  memoryConfigFileFormat.cpp
-  Generowanie kodu...
 LINK : warning LNK4098: domyślna biblioteka "MSVCRT" powoduje konflikt z innymi bibliotekami; użyj opcji /NODEFAULTLIB:biblioteka
   MemoryAccess.vcxproj -> C:\Users\0x55\source\repos\MemoryAccess\x64\Debug\MemoryAccess.exe

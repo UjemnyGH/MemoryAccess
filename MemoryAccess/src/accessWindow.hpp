@@ -40,6 +40,9 @@ struct AccessProcessData {
 	std::uint64_t mValue = 0;
 	bool mShowModules = false;
 	bool mTabOpen = true;
+	std::string mSearchProcess;
+	std::string mSearchModule;
+	std::string mSearchAdvancedData;
 };
 
 // Advanced access flags
@@ -93,6 +96,8 @@ private:
 	bool mOpenCalculatorPopup = false;
 	// Opens software info popup
 	bool mOpenInfoPopup = false;
+	// Opens popup for getting values between 2 addresses
+	bool mOpenGetValuesBetweenAddressesPopup = false;
 	// Open save config popup
 	bool mOpenSaveConfigPopup = false;
 	// Open load config popup
@@ -117,7 +122,16 @@ private:
 	bool mDecimalValues = false;
 	// Write value type (U64, U32 etc.)
 	int mCurrentWriteValueType = 0;
+	// Is advanced view opened
 	bool mAdvancedView = false;
+	// Dialog box data
+	OPENFILENAMEA mDialogBoxData;
+
+	// Get values between 2 addresses popup variables
+	std::uintptr_t mFetchedAddressLow;
+	std::uintptr_t mFetchedAddressHigh;
+	bool mBeginFromModuleAddress = false;
+	bool mRunFetchingReadStatus = false;
 
 	/**
 	* Shows tooltip
@@ -133,6 +147,21 @@ private:
 	* Opens software info popup window
 	*/
 	void OpenSoftwareInfoPopup();
+
+	/**
+	* Opens getting values between addresses popup
+	*/
+	void OpenGetValuesBetweenAddressesPopup(AccessProcessData* apd);
+
+	/**
+	* Opens save config dialog box
+	*/
+	void OpenSaveConfigDialogBox(GLFWwindow* wnd);
+
+	/**
+	* Opens load config dialog box
+	*/
+	void OpenLoadConfigDialogBox(GLFWwindow* wnd);
 
 	/**
 	* Opens save current tab config popup window
